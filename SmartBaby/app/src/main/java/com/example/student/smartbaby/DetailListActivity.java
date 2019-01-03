@@ -10,5 +10,6 @@ public class DetailListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_list);
         //123
+        //123
     }
 }
