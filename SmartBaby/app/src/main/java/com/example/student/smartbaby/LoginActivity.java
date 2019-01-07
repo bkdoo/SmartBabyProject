@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if(!sharedPref.getString("autoLogin", "").equals("")) {
             Intent intent = new Intent(LoginActivity.this,
-                    MainActivity.class); 
+                    MainActivity.class);
             startActivity(intent);
             finish();
         }
