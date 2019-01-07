@@ -1,11 +1,19 @@
 package com.example.student.smartbaby;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.student.smartbaby.Model.Member;
+import com.example.student.smartbaby.Model.Record;
+import com.google.gson.Gson;
+
+import java.util.Map;
+
 public class WaitActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,4 +35,6 @@ public class WaitActivity extends AppCompatActivity {
         }, 2000);
 
     }
+
+
 }

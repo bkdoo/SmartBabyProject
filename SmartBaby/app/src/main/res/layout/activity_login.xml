@@ -6,10 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
-<<<<<<< HEAD
-    <Button
-        android:_id="@+_id/button"
-=======
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
@@ -39,12 +35,7 @@
         app:layout_constraintGuide_percent="0.4" />
 
     <EditText
-<<<<<<< HEAD
-        android:id="@+id/et_pw1"
->>>>>>> master
-=======
         android:id="@+id/et_pw"
->>>>>>> master
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
