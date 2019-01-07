@@ -39,7 +39,11 @@
         app:layout_constraintGuide_percent="0.4" />
 
     <EditText
+<<<<<<< HEAD
         android:id="@+id/et_pw1"
+>>>>>>> master
+=======
+        android:id="@+id/et_pw"
 >>>>>>> master
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
