@@ -1,29 +1,26 @@
 package com.example.student.smartbaby;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.student.smartbaby.Model.Member;
-import com.example.student.smartbaby.Model.Record;
-import com.google.gson.Gson;
 
-import java.util.Map;
 
-public class WaitActivity extends AppCompatActivity {
+public class IntroActivity extends AppCompatActivity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wait);
+        setContentView(R.layout.activity_intro);
 
+        // 인트로 화면 이후 로그인 액티비티로 이동 - startWaiting 메소드
         startWaiting();
     }
 
     private void startWaiting() {
+        // 핸들러를 이용하여 로그인 액티비티로 이동
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -35,6 +32,8 @@ public class WaitActivity extends AppCompatActivity {
         }, 2000);
 
     }
+
+
 
 
 }
