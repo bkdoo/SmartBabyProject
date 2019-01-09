@@ -48,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btn_date.setOnClickListener(new  BtnListener());
+        btn_dsleep.setOnClickListener(new  BtnListener());
+        btn_nsleep.setOnClickListener(new  BtnListener());
+        btn_sleep.setOnClickListener(new  BtnListener());
 
     }
 
@@ -95,7 +99,39 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    class BtnListener implements View.OnClickListener {
 
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btn_date:
+
+                    Intent intent = new Intent(MainActivity.this,ListActivity.class);
+                    startActivity(intent);
+
+                    break;
+                case R.id.btn_dsleep:
+
+                    Intent intent1 = new Intent(MainActivity.this,ListActivity.class);
+                    startActivity(intent1);
+
+                    break;
+                case R.id.btn_nsleep:
+
+                    Intent intent2 = new Intent(MainActivity.this,ListActivity.class);
+                    startActivity(intent2);
+
+                    break;
+                case R.id.btn_sleep:
+
+                    Intent intent3 = new Intent(MainActivity.this,ListActivity.class);
+                    startActivity(intent3);
+
+                    break;
+
+            }
+        }
+    }
 
 
 }
