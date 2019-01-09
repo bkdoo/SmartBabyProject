@@ -104,104 +104,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guideline23" />
 
+
     <EditText
-        android:id="@+id/et_birth"
+        android:id="@+id/et_bname1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="7dp"
-        android:layout_marginBottom="15dp"
-        android:hint="사 용 자 생 일"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:hint="아 이 이 름"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/guideline12"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guideline25" />
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline12">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:orientation="vertical">
-
-
-            <EditText
-                android:id="@+id/et_bname1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="아 이 이 름"
-                android:visibility="visible" />
-
-            <EditText
-                android:id="@+id/et_bname2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="아 이 이 름"
-                android:visibility="gone" />
-
-            <EditText
-                android:id="@+id/et_bname3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="아 이 이 름"
-                android:visibility="gone" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-
-            <EditText
-                android:id="@+id/et_bbirth1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="아 이 생 일"
-                android:inputType="date"
-                android:visibility="visible" />
-
-            <EditText
-                android:id="@+id/et_bbirth2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="아 이 생 일"
-                android:inputType="date"
-                android:visibility="gone" />
-
-            <EditText
-                android:id="@+id/et_bbirth3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="아 이 생 일"
-                android:inputType="date"
-                android:visibility="gone" />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
 
     <Button
         android:id="@+id/btn_id_check"
@@ -226,23 +142,8 @@
         android:text="회원가입"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline6" />
-
-    <Button
-        android:id="@+id/btn_badd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="7dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="10dp"
-        android:text=" 이름추가"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/guideline13"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/guideline12" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline12"
@@ -250,13 +151,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="347dp" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="412dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline21"
