@@ -61,7 +61,7 @@ public class DetailListActivity extends AppCompatActivity {
                     }
                 }) {
             //요청보낼 때 추가로 파라미터가 필요할 경우
-            //URL?a=xxx 이런식으로 보내는 대신에 아래처럼 가능.
+            //URL_JOIN?a=xxx 이런식으로 보내는 대신에 아래처럼 가능.
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();

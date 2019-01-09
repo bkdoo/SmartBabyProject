@@ -27,10 +27,10 @@ public class LoginActivity extends AppCompatActivity {
     EditText et_pw, et_id;
     Button btn_login, btn_join, btn_setUp;
     SharedPreferences sharedPref;
-    String userId, password;
-    boolean isauthUser;
+    String userIdLogin, passwordLogin;
+    boolean isAuthUser;
 
-    String url = "http://70.12.110.69:8090/android_link/android/join";
+    static final String URL_LOGIN = "http://70.12.110.69:8090/android_link/android/login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,9 @@ public class LoginActivity extends AppCompatActivity {
         btn_join = (Button) findViewById(R.id.btn_join);
         btn_setUp = (Button) findViewById(R.id.btn_setUp);
 
+        isAuthUser = false;
+
+        // 회원 가입 후 로그인 화면으로 돌아왔을 때 처리
         Intent intentFromJoin = getIntent();
         if (intentFromJoin.getStringExtra("result") != null) {
             if (intentFromJoin.getStringExtra("result").equals("OK")) {
@@ -54,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
 
         sharedPref = getSharedPreferences("login_info", Context.MODE_PRIVATE);
 
-
+        //로그인 정보 기억
         if (!sharedPref.getString("autoLogin", "").equals("")) {
             Intent intent = new Intent(LoginActivity.this,
                     MainActivity.class);
@@ -66,59 +69,65 @@ public class LoginActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                userIdLogin = et_id.getText().toString();
+                passwordLogin = et_pw.getText().toString();
 
-                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                if (isLoginFormFull()){
+                    RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
-                StringRequest request = new StringRequest(Request.Method.POST, url,
-                        // 요청 성공시
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Log.d("response", response);
-//                                if (response.equals("OK")) {
-//                                    isauthUser = true;
-//                                }
-                            }
-                        },
+                    StringRequest request = new StringRequest(Request.Method.POST, URL_LOGIN,
+                            // 요청 성공시
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Log.d("response", response);
+                                    if (response.equals("OK")) {
+                                        isAuthUser = true;
+                                    }
+                                }
+                            },
 
-                        //에러 발생시
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("error", "[" + error.getMessage() + "]");
-                            }
-                        }) {
-                    //요청보낼 때 추가로 파라미터가 필요할 경우
-                    //URL?a=xxx 이런식으로 보내는 대신에 아래처럼 가능.
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<>();
-                        userId = et_id.getText().toString();
-                        password = et_pw.getText().toString();
-                        params.put("userId", userId);
-                        params.put("password", password);
-                        return params;
-                    }
+                            //에러 발생시
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("error", "[" + error.getMessage() + "]");
+                                }
+                            }) {
+                        //요청보낼 때 추가로 파라미터가 필요할 경우
+                        //URL_JOIN?a=xxx 이런식으로 보내는 대신에 아래처럼 가능.
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<>();
+                            params.put("userIdLogin", userIdLogin);
+                            params.put("passwordLogin", passwordLogin);
+                            return params;
+                        }
 
-                };
+                    };
 
 
-                queue.add(request);
+                    //test 아이디 비밀번호
+                    if (userIdLogin.equals("test") && passwordLogin.equals("123"))
+                        isAuthUser = true;
 
-                if (authUser(et_id.getText().toString(),
-                        et_pw.getText().toString())) {
+                    queue.add(request);
 
-                    if (!et_id.equals("") && !et_pw.equals("")) {
+                    if (isAuthUser) {
                         SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString("autoLogin", et_id.getText().toString());
+                        editor.putString("autoLogin", userIdLogin);
                         editor.commit();
 
-                        Intent intent = new Intent(LoginActivity.this,
+                        Intent intentToMain = new Intent(LoginActivity.this,
                                 MainActivity.class);
-                        startActivity(intent);
+                        startActivity(intentToMain);
                         finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "아이디 혹은 비밀번호가 옳지 않습니다.", Toast.LENGTH_LONG).show();
                     }
                 }
+
+
             }
         });
 
@@ -134,30 +143,23 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private boolean authUser(String id, String pw) {
+    private boolean isLoginFormFull() {
 
-        if (id.equals("")) {
+        if (userIdLogin.equals("")) {
             Toast.makeText(getApplicationContext(),
                     "ID를 입력해주세요.",
                     Toast.LENGTH_LONG).show();
             return false;
         }
 
-        if (pw.equals("")) {
+        if (passwordLogin.equals("")) {
             Toast.makeText(getApplicationContext(),
                     "비밀번호를 입력해주세요.",
                     Toast.LENGTH_LONG).show();
             return false;
         }
 
-        // 비밀번호와 패스워드를 검증한다. 현재는 임시 코드
-        if (isauthUser) {
-            // 아이디와 비밀번호가 맞는 경우
-            return true;
-        } else {
-            Toast.makeText(getApplicationContext(), "아이디 혹은 비밀번호가 옳지 않습니다.", Toast.LENGTH_LONG).show();
-            return false;
-        }
+        return true;
     }
 
 }

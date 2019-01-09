@@ -34,8 +34,9 @@ public class JoinActivity extends AppCompatActivity {
     // ID 중복여부, 회원가입 승인여부
     Boolean isUnusedId, isJoinOK;
 
-    // URL 주소
-    final static String URL = "http://70.12.110.69:8090/android_link/android/join";
+    // URL_JOIN 주소
+    final static String URL_JOIN = "http://70.12.110.69:8090/android_link/android/join";
+    final static String URL_IDCHECK = "http://70.12.110.69:8090/android_link/android/join/idcheck";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,16 +56,8 @@ public class JoinActivity extends AppCompatActivity {
         btn_id_check = (Button) findViewById(R.id.btn_id_check);
         btn_join = (Button) findViewById(R.id.btn_join);
 
-        userIdJoin = et_idJoin.getText().toString();
-        passwordJoin = et_pwJoin.getText().toString();
-        password2Join = et_pw2Join.getText().toString();
-        parName = et_name.getText().toString();
-        parBirth = et_birth.getText().toString();
-        email = et_email.getText().toString();
-        babyName = et_bname1.getText().toString();
-        babyBirth = et_bbirth1.getText().toString();
 
-        isJoinOK = true; //임시값
+        isJoinOK = false; //임시값
         isUnusedId = false;
 
         btn_id_check.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +67,7 @@ public class JoinActivity extends AppCompatActivity {
                 if (isIdInputed()) {
                     if (isRightID()) {
                         RequestQueue idQueue = Volley.newRequestQueue(JoinActivity.this);
-                        StringRequest request = new StringRequest(Request.Method.POST, URL,
+                        StringRequest request = new StringRequest(Request.Method.POST, URL_IDCHECK,
 
                                 // 요청 성공시
                                 new Response.Listener<String>() {
@@ -99,7 +92,7 @@ public class JoinActivity extends AppCompatActivity {
                             @Override
                             protected Map<String, String> getParams() throws AuthFailureError {
                                 Map<String, String> params = new HashMap<>();
-                                params.put("userId", userIdJoin);
+                                params.put("userIdLogin", userIdJoin);
                                 return params;
                             }
 
@@ -130,7 +123,7 @@ public class JoinActivity extends AppCompatActivity {
                 getFormText();
                 if (isFormFull()) {
                     RequestQueue queue = Volley.newRequestQueue(JoinActivity.this);
-                    StringRequest request = new StringRequest(Request.Method.POST, URL,
+                    StringRequest request = new StringRequest(Request.Method.POST, URL_JOIN,
 
                             // 요청 성공시
                             new Response.Listener<String>() {
@@ -155,8 +148,8 @@ public class JoinActivity extends AppCompatActivity {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> params = new HashMap<>();
-                            params.put("userId", userIdJoin);
-                            params.put("password", passwordJoin);
+                            params.put("userIdLogin", userIdJoin);
+                            params.put("passwordLogin", passwordJoin);
                             params.put("parName", parName);
                             params.put("parBirth", parBirth);
                             params.put("babyName", babyName);

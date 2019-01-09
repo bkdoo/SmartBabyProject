@@ -21,6 +21,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     Button btn_setUp, btn_memo, btn_date,btn_dsleep,btn_nsleep, btn_sleep;
+    final static String URL_DATA = "http://70.12.110.69:8090/android_link/android/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DetailListActivity.class);
                 startActivity(intent);
-                finish();
+
             }
         });
 
@@ -48,15 +49,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SetupActivity.class);
                 startActivity(intent);
-                finish();
+
             }
         });
 
-        String url = "";
+
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        StringRequest request = new StringRequest(Request.Method.POST, url,
+        StringRequest request = new StringRequest(Request.Method.POST, URL_DATA,
                 // 요청 성공시
                 new Response.Listener<String>() {
                     @Override
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }) {
             //요청보낼 때 추가로 파라미터가 필요할 경우
-            //URL?a=xxx 이런식으로 보내는 대신에 아래처럼 가능.
+            //URL_JOIN?a=xxx 이런식으로 보내는 대신에 아래처럼 가능.
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();

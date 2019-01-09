@@ -65,12 +65,13 @@
         app:layout_constraintStart_toStartOf="@+id/guideline15"
         app:layout_constraintTop_toTopOf="@+id/guideline8">
 
-        <ListView
+        <com.github.mikephil.charting.charts.BarChart
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/barchart">
 
 
-        </ListView>
+        </com.github.mikephil.charting.charts.BarChart>
 
 
     </LinearLayout>
