@@ -21,7 +21,7 @@
         app:layout_constraintGuide_percent="0.86" />
 
     <EditText
-        android:id="@+id/et_id"
+        android:id="@+id/et_idJoin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -43,7 +43,7 @@
         app:layout_constraintGuide_percent="0.05" />
 
     <EditText
-        android:id="@+id/et_pw"
+        android:id="@+id/et_pwJoin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -59,7 +59,7 @@
         app:layout_constraintTop_toBottomOf="@+id/guideline21" />
 
     <EditText
-        android:id="@+id/et_pw2"
+        android:id="@+id/et_pw2Join"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -72,7 +72,7 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline23"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_pw" />
+        app:layout_constraintTop_toBottomOf="@+id/et_pwJoin" />
 
     <EditText
         android:id="@+id/et_name"
@@ -212,7 +212,7 @@
         android:layout_marginEnd="8dp"
         android:text="중복확인"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/et_id"
+        app:layout_constraintStart_toEndOf="@+id/et_idJoin"
         app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
     <Button

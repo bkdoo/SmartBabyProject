@@ -3,8 +3,16 @@ package com.example.student.smartbaby;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.student.smartbaby.Model.Member;
 import com.google.gson.Gson;
 
@@ -32,48 +40,38 @@ public class DetailListActivity extends AppCompatActivity {
                 "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 
 
-    }
-    class MyTask extends AsyncTask<Map<String, String>, Integer, String> {
+        String url = "";
 
-        // IP 추후 입력
-        String ip ;
-        HashMap<String, String> map;
+        RequestQueue queue = Volley.newRequestQueue(this);
 
-//        public MyTask(String ip, HashMap<String, String> map) {
-//            this.ip = ip;
-//            this.map = map;
-//        }
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                // 요청 성공시
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("result", "[" + response + "]");
+                    }
+                },
 
-        @Override
-        protected String doInBackground(Map<String, String>... maps) {
+                //에러 발생시
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("error", "[" + error.getMessage() + "]");
+                    }
+                }) {
+            //요청보낼 때 추가로 파라미터가 필요할 경우
+            //URL?a=xxx 이런식으로 보내는 대신에 아래처럼 가능.
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("param1", "isGood");
+                return  params;
+            }
 
-            HttpClient.Builder http = new HttpClient.Builder("POST", "http://localhost:8080/bkd/" );
+        };
 
-            // Parameter 를 전송한다.
-            //http.addAllParameters(maps[0]);
+        queue.add(request);
 
-            //Http 요청 전송
-            HttpClient post = http.create();
-            post.request();
-
-            //응답 상태코드 가져오기
-            int statusCode = post.getHttpStatusCode();
-
-            //응답 본문 가져오기
-            String body = post.getBody();
-
-            return body;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            Gson gson = new Gson();
-
-            Member memberData = gson.fromJson(s, Member.class);
-            String userId = memberData.getUserId();
-
-
-
-        }
     }
 }
