@@ -31,7 +31,8 @@ public class ListViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return list.size();
+        int count = list.size() > LIST_COUNT ? LIST_COUNT : list.size();
+        return count;
     }
 
     @Override

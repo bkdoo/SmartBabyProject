@@ -55,8 +55,6 @@ public class JoinActivity extends AppCompatActivity {
         btn_join = (Button) findViewById(R.id.btn_join);
 
 
-
-
         // 아이디 사용가능 확인 버튼 클릭 리스너
         btn_id_check.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,12 +119,12 @@ public class JoinActivity extends AppCompatActivity {
                         //요청한 request 를 큐에 추가
                         idQueue.add(request);
 
-                    // ID 길이 제한을 어겼을 시
+                        // ID 길이 제한을 어겼을 시
                     } else {
                         Toast.makeText(getApplicationContext(), "20자 이내로 입력하세요.", Toast.LENGTH_SHORT).show();
                     }
 
-                // 아이디 칸이 공백일 시
+                    // 아이디 칸이 공백일 시
                 } else {
                     Toast.makeText(getApplicationContext(), "ID를 입력하세요.", Toast.LENGTH_SHORT).show();
                 }
@@ -145,54 +143,64 @@ public class JoinActivity extends AppCompatActivity {
                 getFormText();
                 // 모든 항목에 값이 입력되었는지 확인 - isFormFull
                 if (isFormFull()) {
-                    RequestQueue queue = Volley.newRequestQueue(JoinActivity.this);
-                    StringRequest request = new StringRequest(Request.Method.POST, URL_JOIN,
+                    //비밀번호 확인이 일치하는지 검사 - isPasswordEqual 메소드
+                    if (isPasswordEqual()) {
 
-                            // 요청 성공시
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    // response 로부터 응답받은 데이터 처리
-                                    Log.d("JOINresponse", response);
-                                    if (response.equals("ok")) {
-                                        isJoinOK = true;
+                        RequestQueue queue = Volley.newRequestQueue(JoinActivity.this);
+                        StringRequest request = new StringRequest(Request.Method.POST, URL_JOIN,
+
+                                // 요청 성공시
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        // response 로부터 응답받은 데이터 처리
+                                        Log.d("JOINresponse", response);
+                                        if (response.equals("ok")) {
+                                            isJoinOK = true;
+                                        }
+
+                                        // 서버로부터 회원가입 ok를 받고 나면 LoginActivity 로 이동
+                                        if (isJoinOK) {
+                                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                            // intent 에 회원가입 결과를 넣고 이를 통해 로그인화면에서 Toast 메시지 출력
+                                            intent.putExtra("result", "OK");
+                                            startActivity(intent);
+                                        }
                                     }
+                                },
 
-                                    // 서버로부터 회원가입 ok를 받고 나면 LoginActivity 로 이동
-                                    if (isJoinOK) {
-                                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                        // intent 에 회원가입 결과를 넣고 이를 통해 로그인화면에서 Toast 메시지 출력
-                                        intent.putExtra("result", "OK");
-                                        startActivity(intent);
+                                //에러 발생시
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.d("error", "[" + error.getMessage() + "]");
                                     }
-                                }
-                            },
+                                }) {
 
-                            //에러 발생시
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Log.d("error", "[" + error.getMessage() + "]");
-                                }
-                            }) {
+                            // 요청시 파라미터 전달
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                // 파라미터로 전달할 HashMap 객체에 각 데이터들을 입력 후 전송
+                                Map<String, String> params = new HashMap<>();
+                                params.put("userId", userIdJoin);
+                                params.put("password", passwordJoin);
+                                params.put("parName", parName);
+                                params.put("babyName", babyName);
+                                params.put("email", email);
+                                return params;
+                            }
 
-                        // 요청시 파라미터 전달
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            // 파라미터로 전달할 HashMap 객체에 각 데이터들을 입력 후 전송
-                            Map<String, String> params = new HashMap<>();
-                            params.put("userId", userIdJoin);
-                            params.put("password", passwordJoin);
-                            params.put("parName", parName);
-                            params.put("babyName", babyName);
-                            params.put("email", email);
-                            return params;
-                        }
+                        };
 
-                    };
+                        queue.add(request);
 
-
-                    queue.add(request);
+                    // 비밀번호가 일치하지 않을 경우
+                    } else {
+                        // 토스트 메시지로 안내
+                        Toast.makeText(getApplicationContext(), "비밀번호 확인이 일치하지 않습니다.", Toast.LENGTH_LONG).show();
+                        // 비밀번호 확인란에 포커스를 줌
+                        et_pw2Join.requestFocus();
+                    }
 
                 // 비어있는 항목이 있다면 Toast 메시지 출력
                 } else {
@@ -245,6 +253,15 @@ public class JoinActivity extends AppCompatActivity {
         parName = et_name.getText().toString();
         email = et_email.getText().toString();
         babyName = et_bname1.getText().toString();
+    }
+
+    // 비밀번호 확인이 일치하는지 검사하는 메소드 - return 타입 : boolean
+    private boolean isPasswordEqual() {
+        if (passwordJoin.equals(password2Join)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

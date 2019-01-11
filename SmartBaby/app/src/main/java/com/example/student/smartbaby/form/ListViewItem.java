@@ -1,6 +1,5 @@
 package com.example.student.smartbaby.form;
 
-import java.util.Date;
 
 public class ListViewItem {
     private int boardId;

@@ -83,6 +83,9 @@ public class LoginActivity extends AppCompatActivity {
                 // 등록된 아이디 & 비밀번호 확인 초기화
                 isAuthUser = false;
 
+                //테스트 로그인
+                testLogin();
+
                 // 로그인 정보를 모두 입력했는지 확인 - isLoginFormFull 메소드
                 if (isLoginFormFull()){
 
@@ -178,6 +181,22 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    //테스트 로그인 메소드
+    private void testLogin() {
+        if (userIdLogin.equals("test")&&passwordLogin.equals("1234")) {
+            // sharedPref 의 autoLogin 키값에 로그인 된 아이디를 value 값으로 저장
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("autoLogin", userIdLogin);
+            editor.commit();
+
+            // MainActivity 로 이동
+            Intent intentToMain = new Intent(LoginActivity.this,
+                    MainActivity.class);
+            startActivity(intentToMain);
+            finish();
+        }
     }
 
 }
