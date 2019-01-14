@@ -59,11 +59,16 @@ public class ListViewAdapter extends BaseAdapter {
         TextView tv_item_wakeTime_db= (TextView) view.findViewById(R.id.tv_item_wakeTime_db);
         TextView tv_item_totalTime_db= (TextView) view.findViewById(R.id.tv_item_totalTime_db);
 
-        tv_item_date.setText(list.get(pos).getRegDate());
-        tv_item_dayNight.setText(list.get(pos).getDayNight());
-        tv_item_sleepTime_db.setText(list.get(pos).getSleepTime());
-        tv_item_wakeTime_db.setText(list.get(pos).getWakeupTime());
-        tv_item_totalTime_db.setText(list.get(pos).getTotalTime());
+        String date_item = list.get(pos).getRegDate();
+        String dayNight_item =list.get(pos).getDayNight();
+        String sleepTime_item = list.get(pos).getSleepTime();
+        String wakeupTime_item = list.get(pos).getWakeupTime();
+        String totalTime_item = list.get(pos).getTotalTime();
+        tv_item_date.setText(date_item);
+        tv_item_dayNight.setText(dayNight_item);
+        tv_item_sleepTime_db.setText(sleepTime_item);
+        tv_item_wakeTime_db.setText(setNullOrTime(wakeupTime_item));
+        tv_item_totalTime_db.setText(setNullOrTime(totalTime_item));
 
         if (list.get(pos).getDayNight().equals("DAY")) {
             tv_item_dayNight.setTextColor(ContextCompat.getColor(context, R.color.red));
@@ -73,5 +78,12 @@ public class ListViewAdapter extends BaseAdapter {
 
 
         return view;
+    }
+
+    private String setNullOrTime(String time) {
+        if (time.equals("null")) {
+            return "아직 자는 중이에요~";
+        }
+        return time;
     }
 }

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,14 +19,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapEditText;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText et_pw, et_id;
-    Button btn_login, btn_join, btn_setUp;
+    BootstrapEditText et_pw, et_id;
+    BootstrapButton btn_login, btn_join;
 
     // 아이디, 비밀번호 입력 받을 String 객체
     String userIdLogin, passwordLogin;
@@ -43,13 +46,16 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // 객체생성
-        et_id = (EditText) findViewById(R.id.et_idJoin);
-        et_pw = (EditText) findViewById(R.id.et_pwJoin);
+        et_id = (BootstrapEditText) findViewById(R.id.et_idJoin);
+        et_pw = (BootstrapEditText) findViewById(R.id.et_pwJoin);
 
-        btn_login = (Button) findViewById(R.id.btn_login);
-        btn_join = (Button) findViewById(R.id.btn_join);
-        btn_setUp = (Button) findViewById(R.id.btn_setUp);
+        btn_login = (BootstrapButton) findViewById(R.id.btn_login);
+        btn_join = (BootstrapButton) findViewById(R.id.btn_join);
 
+        et_id.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+        et_pw.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+        btn_login.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+        btn_join.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
 
 
         // 회원 가입 후 로그인 화면으로 돌아왔을 때 처리
@@ -87,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                 testLogin();
 
                 // 로그인 정보를 모두 입력했는지 확인 - isLoginFormFull 메소드
-                if (isLoginFormFull()){
+                if (isLoginFormFull()) {
 
                     // 서버로 request 전송 ( 가입된 올바른 아이디 & 비밀번호 인지 확인)
                     RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -128,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     Log.d("error", "[" + error.getMessage() + "]");
+                                    Toast.makeText(LoginActivity.this, "서버가 연결되지 않습니다.", Toast.LENGTH_SHORT).show();
 
                                 }
                             }) {
@@ -185,7 +192,7 @@ public class LoginActivity extends AppCompatActivity {
 
     //테스트 로그인 메소드
     private void testLogin() {
-        if (userIdLogin.equals("test")&&passwordLogin.equals("1234")) {
+        if (userIdLogin.equals("test") && passwordLogin.equals("1234")) {
             // sharedPref 의 autoLogin 키값에 로그인 된 아이디를 value 값으로 저장
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("autoLogin", userIdLogin);

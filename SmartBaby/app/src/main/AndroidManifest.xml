@@ -20,7 +20,6 @@
         <activity android:name=".JoinActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".SetupActivity" />
-        <activity android:name=".ListActivity" />
         <activity android:name=".DetailListActivity"></activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>

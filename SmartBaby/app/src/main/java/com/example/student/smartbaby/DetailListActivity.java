@@ -36,7 +36,7 @@ public class DetailListActivity extends AppCompatActivity {
     String dayNight;
     String memo;
 
-    final static String URL_MEMO_UPDATE = "http://70.12.110.69:8090/smartbaby/board/android/list/";
+    final static String URL_MEMO_UPDATE = "http://70.12.110.69:8090/smartbaby/board/android/editMemo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,15 +63,13 @@ public class DetailListActivity extends AppCompatActivity {
         totalTime = intentFromMain.getStringExtra("totalTime");
         dayNight = intentFromMain.getStringExtra("dayNight");
         memo = intentFromMain.getStringExtra("memo");
+        memo = memo.equals("null") ? "" : memo;
+        et_memo.setText(memo);
         tv_date_detail.setText(date);
         tv_sleeptime_detail.setText("잠든 시간 : " + sleepTime);
-        tv_wakeuptime_detail.setText("일어난 시간 : " + wakeupTime);
-        tv_totaltime_detail.setText("총 수면 시간 : " +totalTime);
+        tv_wakeuptime_detail.setText("일어난 시간 : " + setNullOrTime(wakeupTime));
+        tv_totaltime_detail.setText("총 수면 시간 : " + setNullOrTime(totalTime));
         tv_daynight_detail.setText(dayNight);
-        if (!memo.equals("null")) {
-
-            et_memo.setText(memo);
-        }
 
         if (dayNight.equals("DAY")) {
             tv_daynight_detail.setTextColor(ContextCompat.getColor(this, R.color.red));
@@ -112,7 +110,7 @@ public class DetailListActivity extends AppCompatActivity {
                 btn_cancel.setVisibility(View.GONE);
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
-                StringRequest request = new StringRequest(Request.Method.GET, URL_MEMO_UPDATE + boardId,
+                StringRequest request = new StringRequest(Request.Method.POST, URL_MEMO_UPDATE,
                         // 요청 성공시
                         new Response.Listener<String>() {
                             @Override
@@ -133,6 +131,7 @@ public class DetailListActivity extends AppCompatActivity {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<>();
+                        params.put("boardId", boardId);
                         params.put("memo", memo);
                         return params;
                     }
@@ -157,5 +156,12 @@ public class DetailListActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private String setNullOrTime(String time) {
+        if (time.equals("null")) {
+            return "자는 중이에요~";
+        }
+        return time;
     }
 }

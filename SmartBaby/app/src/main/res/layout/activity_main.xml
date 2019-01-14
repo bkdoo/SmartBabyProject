@@ -43,10 +43,10 @@
         app:layout_constraintStart_toStartOf="@+id/guideline15"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/btn_setUp"
-        android:layout_width="55dp"
-        android:layout_height="37dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
@@ -81,7 +81,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="@+id/guideline15" />
 
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/btn_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -89,13 +89,13 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:text="날짜"
+        android:text="갱신"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline28"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/btn_dsleep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -104,12 +104,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:text="낮잠"
+        app:bootstrapBrand="danger"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline27"
         app:layout_constraintStart_toStartOf="@+id/guideline28"
         app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/btn_nsleep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -118,12 +119,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:text="밤잠"
+        app:bootstrapBrand="info"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline26"
         app:layout_constraintStart_toStartOf="@+id/guideline27"
         app:layout_constraintTop_toBottomOf="@+id/guideline11" />
 
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/btn_sleep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -131,7 +133,8 @@
         android:layout_marginTop="11dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:text="수면"
+        android:text="종합"
+        app:bootstrapBrand="success"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline26"
@@ -165,7 +168,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/light_slate_gray"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

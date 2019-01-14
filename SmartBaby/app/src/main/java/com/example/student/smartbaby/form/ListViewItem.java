@@ -2,7 +2,7 @@ package com.example.student.smartbaby.form;
 
 
 public class ListViewItem {
-    private int boardId;
+    private String boardId;
     private String regDate;
     private String sleepTime;
     private String wakeupTime;
@@ -10,7 +10,7 @@ public class ListViewItem {
     private String dayNight;
     private String memo;
 
-    public ListViewItem(int boardId, String regDate, String sleepTime, String wakeupTime, String totalTime, String dayNight, String memo) {
+    public ListViewItem(String boardId, String regDate, String sleepTime, String wakeupTime, String totalTime, String dayNight, String memo) {
         this.boardId = boardId;
         this.regDate = regDate;
         this.sleepTime = sleepTime;
@@ -20,11 +20,11 @@ public class ListViewItem {
         this.memo = memo;
     }
 
-    public int getBoardId() {
+    public String getBoardId() {
         return boardId;
     }
 
-    public void setBoardId(int boardId) {
+    public void setBoardId(String boardId) {
         this.boardId = boardId;
     }
 

@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.beardedhen.androidbootstrap.BootstrapButton;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class JoinActivity extends AppCompatActivity {
     EditText et_idJoin, et_pwJoin, et_pw2Join;
     EditText et_name, et_email, et_bname1;
 
-    Button btn_id_check, btn_join;
+    BootstrapButton btn_id_check, btn_join;
 
     // EditText 의 문자를 받아올 String 객체들
     String userIdJoin, passwordJoin, password2Join;
@@ -51,8 +52,8 @@ public class JoinActivity extends AppCompatActivity {
         et_email = (EditText) findViewById(R.id.et_email);
         et_bname1 = (EditText) findViewById(R.id.et_bname1);
 
-        btn_id_check = (Button) findViewById(R.id.btn_id_check);
-        btn_join = (Button) findViewById(R.id.btn_join);
+        btn_id_check = (BootstrapButton) findViewById(R.id.btn_id_check);
+        btn_join = (BootstrapButton) findViewById(R.id.btn_join);
 
 
         // 아이디 사용가능 확인 버튼 클릭 리스너
