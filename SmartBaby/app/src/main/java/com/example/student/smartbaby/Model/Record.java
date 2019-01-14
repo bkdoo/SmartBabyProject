@@ -3,7 +3,7 @@ package com.example.student.smartbaby.Model;
 import java.util.Date;
 
 public class Record {
-    private int _id;
+    private int board_id;
     private Date regDate;
     private Date updateDate;
     private String sleepTime;
@@ -12,12 +12,12 @@ public class Record {
     private String memo;
     private String dayNight;
 
-    public int get_id() {
-        return _id;
+    public int getBoard_id() {
+        return board_id;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public void setBoard_id(int board_id) {
+        this.board_id = board_id;
     }
 
     public Date getRegDate() {

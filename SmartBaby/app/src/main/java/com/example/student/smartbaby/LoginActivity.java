@@ -3,145 +3,207 @@ package com.example.student.smartbaby;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.student.smartbaby.Model.Member;
-import com.example.student.smartbaby.Model.Record;
-import com.google.gson.Gson;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapEditText;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText et_pw, et_id;
-    Button btn_login, btn_join, btn_setUp;
+    BootstrapEditText et_pw, et_id;
+    BootstrapButton btn_login, btn_join;
+
+    // 아이디, 비밀번호 입력 받을 String 객체
+    String userIdLogin, passwordLogin;
+    // 로그인 정보를 저장할 SharedPreferences 객체
     SharedPreferences sharedPref;
-    MyTask myTask = null;
+    // 회원가입된 아이디 & 비밀번호인지 확인
+    boolean isAuthUser;
+
+    // URL 주소
+    static final String URL_LOGIN = "http://70.12.110.69:8090/smartbaby/account/android/login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        et_id = (EditText)findViewById(R.id.et_id);
-        et_pw = (EditText)findViewById(R.id.et_pw);
+        // 객체생성
+        et_id = (BootstrapEditText) findViewById(R.id.et_idJoin);
+        et_pw = (BootstrapEditText) findViewById(R.id.et_pwJoin);
 
-        btn_login = (Button)findViewById(R.id.btn_login);
-        btn_join = (Button)findViewById(R.id.btn_join);
-        btn_setUp = (Button)findViewById(R.id.btn_setUp);
+        btn_login = (BootstrapButton) findViewById(R.id.btn_login);
+        btn_join = (BootstrapButton) findViewById(R.id.btn_join);
 
-        String id = et_id.getText().toString();
+        et_id.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+        et_pw.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+        btn_login.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+        btn_join.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
 
-        sharedPref = getSharedPreferences("login_info", Context.MODE_PRIVATE);
 
-        if (myTask == null) {
-            myTask = new MyTask();
-            myTask.execute();
+        // 회원 가입 후 로그인 화면으로 돌아왔을 때 처리
+        Intent intentFromJoin = getIntent();
+        // intent 의 result 값 유무 판단 (회원가입 후 왔으면 값이 존재)
+        if (intentFromJoin.getStringExtra("result") != null) {
+            // 그 값이 "OK" 일 때(회원가입 승인) Toast 메시지 출력
+            if (intentFromJoin.getStringExtra("result").equals("OK")) {
+                Toast.makeText(getApplicationContext(), "회원가입이 완료되었습니다. 로그인하세요", Toast.LENGTH_LONG).show();
+            }
         }
 
-        if(!sharedPref.getString("autoLogin", "").equals("")) {
+        // "login_info" 라는 이름으로 sharedPref 객체 생성
+        sharedPref = getSharedPreferences("login_info", Context.MODE_PRIVATE);
+
+        // 자동 로그인 기능 - sharedPref 에 autoLogin 값이 존재하면 바로 MainActivity 로 이동
+        if (!sharedPref.getString("autoLogin", "").equals("")) {
             Intent intent = new Intent(LoginActivity.this,
                     MainActivity.class);
             startActivity(intent);
             finish();
         }
 
+        // 로그인 버튼 클릭 리스너
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(authUser(et_id.getText().toString(),
-                        et_pw.getText().toString())) {
+                // 아이디와 비밀번호를 String 으로 전환
+                userIdLogin = et_id.getText().toString();
+                passwordLogin = et_pw.getText().toString();
+                // 등록된 아이디 & 비밀번호 확인 초기화
+                isAuthUser = false;
 
-                    if(!et_id.equals("") && !et_pw.equals("")) {
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString("autoLogin", et_id.getText().toString());
-                        editor.commit();
+                //테스트 로그인
+                testLogin();
 
-                        Intent intent = new Intent(LoginActivity.this,
-                                MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
+                // 로그인 정보를 모두 입력했는지 확인 - isLoginFormFull 메소드
+                if (isLoginFormFull()) {
+
+                    // 서버로 request 전송 ( 가입된 올바른 아이디 & 비밀번호 인지 확인)
+                    RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                    StringRequest request = new StringRequest(Request.Method.POST, URL_LOGIN,
+                            // 요청 성공시
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Log.d("LOGINresponse", response);
+                                    // "ok"를 전달받으면 등록된 아이디 & 비밀번호 임을 확인
+                                    if (response.equals("ok")) {
+                                        isAuthUser = true;
+                                    }
+
+                                    // "fail"을 전달받으면 등록되지 않은 아이디거나 틀린 비밀번호임을 Toast 메시지로 출력
+                                    if (response.equals("fail")) {
+                                        Toast.makeText(getApplicationContext(), "아이디 혹은 비밀번호가 옳지 않습니다.", Toast.LENGTH_LONG).show();
+                                    }
+
+                                    // 로그인에 성공하면
+                                    if (isAuthUser) {
+                                        // sharedPref 의 autoLogin 키값에 로그인 된 아이디를 value 값으로 저장
+                                        SharedPreferences.Editor editor = sharedPref.edit();
+                                        editor.putString("autoLogin", userIdLogin);
+                                        editor.commit();
+
+                                        // MainActivity 로 이동
+                                        Intent intentToMain = new Intent(LoginActivity.this,
+                                                MainActivity.class);
+                                        startActivity(intentToMain);
+                                        finish();
+                                    }
+                                }
+                            },
+
+                            //에러 발생시
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("error", "[" + error.getMessage() + "]");
+                                    Toast.makeText(LoginActivity.this, "서버가 연결되지 않습니다.", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }) {
+
+                        // 요청시 아이디와 비밀번호를 파라미터로 전달
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            // HashMap 형태로 아이디와 비밀번호를 전달
+                            Map<String, String> params = new HashMap<>();
+                            params.put("userId", userIdLogin);
+                            params.put("password", passwordLogin);
+                            return params;
+                        }
+
+                    };
+                    // 요청을 queue 에 저장
+                    queue.add(request);
                 }
+            }
+        });
+
+
+        // 회원 가입 버튼 클릭 리스너
+        btn_join.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // JoinActivity 로 이동
+                Intent intentJoin = new Intent(getApplicationContext(), JoinActivity.class);
+                startActivity(intentJoin);
             }
         });
     }
 
-    private boolean authUser(String id, String pw) {
+    // 로그인 창에 아이디와 비밀번호를 입력했는지 확인하는 메소드 - return 타입 : boolean
+    // 미입력시 Toast 메시지 출력하며 false 를 리턴
+    private boolean isLoginFormFull() {
 
-        if(id.equals("")) {
+        if (userIdLogin.equals("")) {
             Toast.makeText(getApplicationContext(),
                     "ID를 입력해주세요.",
                     Toast.LENGTH_LONG).show();
             return false;
         }
 
-        if(pw.equals("")) {
+        if (passwordLogin.equals("")) {
             Toast.makeText(getApplicationContext(),
                     "비밀번호를 입력해주세요.",
                     Toast.LENGTH_LONG).show();
             return false;
         }
 
-        // 비밀번호와 패스워드를 검증한다. 현재는 임시 코드
-        if(id.equals("user") && pw.equals("1234")) {
-            // 아이디와 비밀번호가 맞는 경우
-            return true;
-        } else {
-            // 아이디와 비밀번호가 다른 경우
-            return false;
+        return true;
+    }
+
+    //테스트 로그인 메소드
+    private void testLogin() {
+        if (userIdLogin.equals("test") && passwordLogin.equals("1234")) {
+            // sharedPref 의 autoLogin 키값에 로그인 된 아이디를 value 값으로 저장
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("autoLogin", userIdLogin);
+            editor.commit();
+
+            // MainActivity 로 이동
+            Intent intentToMain = new Intent(LoginActivity.this,
+                    MainActivity.class);
+            startActivity(intentToMain);
+            finish();
         }
     }
 
-    class MyTask extends AsyncTask<Map<String, String>, Integer, String> {
-
-        // IP 추후 입력
-        String ip ;
-        HashMap<String, String> map;
-
-//        public MyTask(String ip, HashMap<String, String> map) {
-//            this.ip = ip;
-//            this.map = map;
-//        }
-
-        @Override
-        protected String doInBackground(Map<String, String>... maps) {
-
-            HttpClient.Builder http = new HttpClient.Builder("POST", "http://localhost:8080/bkd/" );
-
-            // Parameter 를 전송한다.
-            //http.addAllParameters(maps[0]);
-
-            //Http 요청 전송
-            HttpClient post = http.create();
-            post.request();
-
-            //응답 상태코드 가져오기
-            int statusCode = post.getHttpStatusCode();
-
-            //응답 본문 가져오기
-            String body = post.getBody();
-
-            return body;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            Gson gson = new Gson();
-
-            Member memberData = gson.fromJson(s, Member.class);
-            String userId = memberData.getUserId();
-
-
-
-        }
-    }
 }

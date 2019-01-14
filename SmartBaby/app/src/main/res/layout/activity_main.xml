@@ -14,13 +14,6 @@
         app:layout_constraintGuide_percent="0.15" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.7" />
-
-    <android.support.constraint.Guideline
         android:id="@+id/guideline10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,44 +34,19 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:ems="10"
         android:gravity="center"
         android:text="최근 수면 패턴"
         android:textSize="20dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_memo"
-        app:layout_constraintEnd_toStartOf="@+id/guideline14"
-        app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toTopOf="@+id/guideline8">
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-        </ListView>
-
-
-    </LinearLayout>
-
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/btn_setUp"
-        android:layout_width="55dp"
-        android:layout_height="37dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
@@ -86,20 +54,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline14"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_memo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="2dp"
-        android:text="메 모"
-        app:layout_constraintBottom_toTopOf="@+id/guideline10"
-        app:layout_constraintEnd_toStartOf="@+id/guideline14"
-        app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toBottomOf="@+id/guideline9" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline14"
@@ -127,21 +81,21 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="@+id/guideline15" />
 
-    <Button
-        android:id="@+id/btn_date"
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/btn_renew"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:text="날짜"
+        android:text="갱신"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline28"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/btn_dsleep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -150,12 +104,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:text="낮잠"
+        app:bootstrapBrand="danger"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline27"
         app:layout_constraintStart_toStartOf="@+id/guideline28"
         app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/btn_nsleep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -164,12 +119,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:text="밤잠"
+        app:bootstrapBrand="info"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline26"
         app:layout_constraintStart_toStartOf="@+id/guideline27"
         app:layout_constraintTop_toBottomOf="@+id/guideline11" />
 
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/btn_sleep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -177,7 +133,8 @@
         android:layout_marginTop="11dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:text="수면"
+        android:text="종합"
+        app:bootstrapBrand="success"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline26"
@@ -203,4 +160,15 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.25" />
+
+    <ListView
+        android:id="@+id/lv_sleep"
+        android:layout_width="322dp"
+        android:layout_height="307dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

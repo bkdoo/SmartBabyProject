@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="90dp">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline34"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline35"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.33" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline36"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.675" />
+
+    <TextView
+        android:id="@+id/tv_item_date"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="날짜"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline35"
+        app:layout_constraintEnd_toStartOf="@+id/guideline34"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_item_sleepTime"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="잠든 시간"
+        app:layout_constraintBottom_toTopOf="@+id/guideline35"
+        app:layout_constraintEnd_toStartOf="@+id/guideline37"
+        app:layout_constraintStart_toEndOf="@+id/guideline34"
+        app:layout_constraintTop_toTopOf="@+id/guideline38" />
+
+    <TextView
+        android:id="@+id/tv_item_wakeTime"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="일어난 시간"
+        app:layout_constraintBottom_toTopOf="@+id/guideline36"
+        app:layout_constraintEnd_toStartOf="@+id/guideline37"
+        app:layout_constraintStart_toStartOf="@+id/guideline34"
+        app:layout_constraintTop_toBottomOf="@+id/guideline35" />
+
+    <TextView
+        android:id="@+id/tv_item_totalTime"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="총 수면 시간"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline37"
+
+        app:layout_constraintStart_toEndOf="@+id/guideline34"
+        app:layout_constraintTop_toBottomOf="@+id/guideline36" />
+
+    <TextView
+        android:id="@+id/tv_item_dayNight"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="낮잠/밤잠"
+        android:textAlignment="center"
+        android:textColor="@color/blue"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline34"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline36" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline37"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline38"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="-1dp" />
+
+    <TextView
+        android:id="@+id/tv_item_sleepTime_db"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/guideline35"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline37"
+        app:layout_constraintTop_toBottomOf="@+id/guideline38" />
+
+    <TextView
+        android:id="@+id/tv_item_wakeTime_db"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/guideline36"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline37"
+        app:layout_constraintTop_toBottomOf="@+id/guideline35" />
+
+    <TextView
+        android:id="@+id/tv_item_totalTime_db"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline37"
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_wakeTime_db" />
+</android.support.constraint.ConstraintLayout>
