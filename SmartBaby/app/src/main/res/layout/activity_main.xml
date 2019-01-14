@@ -82,7 +82,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline15" />
 
     <com.beardedhen.androidbootstrap.BootstrapButton
-        android:id="@+id/btn_date"
+        android:id="@+id/btn_renew"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"

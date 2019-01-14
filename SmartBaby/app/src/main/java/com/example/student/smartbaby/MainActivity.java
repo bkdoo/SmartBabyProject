@@ -5,12 +5,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -39,7 +39,7 @@ import app.akexorcist.bluetotohspp.library.DeviceList;
 
 public class MainActivity extends AppCompatActivity {
 
-    BootstrapButton btn_setUp, btn_date, btn_dsleep, btn_nsleep, btn_sleep;
+    BootstrapButton btn_setUp, btn_renew, btn_dsleep, btn_nsleep, btn_sleep;
     final static String URL_DATA = "http://70.12.110.69:8090/smartbaby/board/android/list";
     final static String URL_SLEEP = "http://70.12.110.69:8090/smartbaby/board/android/create";
 
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     RequestQueue blueQueue;
 
     StringRequest mainRequest;
+    Vibrator vibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +64,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btn_setUp = (BootstrapButton) findViewById(R.id.btn_setUp);
-        btn_date = (BootstrapButton) findViewById(R.id.btn_date);
+        btn_renew = (BootstrapButton) findViewById(R.id.btn_renew);
         btn_dsleep = (BootstrapButton) findViewById(R.id.btn_dsleep);
         btn_nsleep = (BootstrapButton) findViewById(R.id.btn_nsleep);
         btn_sleep = (BootstrapButton) findViewById(R.id.btn_sleep);
         lv_sleep = (ListView) findViewById(R.id.lv_sleep);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         isSleeping = false;
 
@@ -166,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                         blueQueue.add(blueRequest);
                         isSleeping = false;
                         bluetoothSPP.send("1", true);
+                        vibrator.vibrate(new long[]{2000, 2000, 2000, 2000, 2000, 2000}, -1);
                     }
                 }
             }
@@ -213,7 +216,25 @@ public class MainActivity extends AppCompatActivity {
 
         requestList();
 
-        btn_date.setOnClickListener(new View.OnClickListener() {
+        btn_renew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestList();
+            }
+        });
+        btn_dsleep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestDayList();
+            }
+        });
+        btn_nsleep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestNightList();
+            }
+        });
+        btn_sleep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 requestList();
@@ -261,6 +282,114 @@ public class MainActivity extends AppCompatActivity {
                                 String sleepTime = root.getString("sleepTime");
                                 String totalTime = root.getString("totalTime");
                                 String dayNight = root.getString("dayNight");
+                                String memo = root.getString("memo");
+                                arrayList.add(new ListViewItem(boardId, date, sleepTime, wakeupTime, totalTime, dayNight, memo));
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        listViewAdapter.notifyDataSetChanged();
+                    }
+                },
+
+                //에러 발생시
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("error", "[" + error.getMessage() + "]");
+                    }
+                }) {
+            //요청보낼 때 추가로 파라미터가 필요할 경우
+            //URL_JOIN?a=xxx 이런식으로 보내는 대신에 아래처럼 가능.
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("userId", userId);
+                return params;
+            }
+
+        };
+
+        mainQueue.add(mainRequest);
+    }
+    private void requestDayList() {
+        mainRequest = new StringRequest(Request.Method.POST, URL_DATA,
+                // 요청 성공시
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("DayList_response", response);
+                        JSONObject root;
+                        JSONArray jsonArray;
+                        try {
+                            jsonArray = new JSONArray(response);
+                            arrayList.clear();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                root = jsonArray.getJSONObject(i);
+                                String dayNight = root.getString("dayNight");
+                                if (!dayNight.equals("DAY")) {
+                                    continue;
+                                }
+                                String boardId = root.getString("boardId");
+                                String date = root.getString("regDateStr");
+                                String wakeupTime = root.getString("wakeupTime");
+                                String sleepTime = root.getString("sleepTime");
+                                String totalTime = root.getString("totalTime");
+                                String memo = root.getString("memo");
+                                arrayList.add(new ListViewItem(boardId, date, sleepTime, wakeupTime, totalTime, dayNight, memo));
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        listViewAdapter.notifyDataSetChanged();
+                    }
+                },
+
+                //에러 발생시
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("error", "[" + error.getMessage() + "]");
+                    }
+                }) {
+            //요청보낼 때 추가로 파라미터가 필요할 경우
+            //URL_JOIN?a=xxx 이런식으로 보내는 대신에 아래처럼 가능.
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("userId", userId);
+                return params;
+            }
+
+        };
+
+        mainQueue.add(mainRequest);
+    }
+    private void requestNightList() {
+        mainRequest = new StringRequest(Request.Method.POST, URL_DATA,
+                // 요청 성공시
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("NIGHTList_response", response);
+                        JSONObject root;
+                        JSONArray jsonArray;
+                        try {
+                            jsonArray = new JSONArray(response);
+                            arrayList.clear();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                root = jsonArray.getJSONObject(i);
+                                String dayNight = root.getString("dayNight");
+                                if (!dayNight.equals("NIGHT")){
+                                    continue;
+                                }
+                                String boardId = root.getString("boardId");
+                                String date = root.getString("regDateStr");
+                                String wakeupTime = root.getString("wakeupTime");
+                                String sleepTime = root.getString("sleepTime");
+                                String totalTime = root.getString("totalTime");
                                 String memo = root.getString("memo");
                                 arrayList.add(new ListViewItem(boardId, date, sleepTime, wakeupTime, totalTime, dayNight, memo));
 
