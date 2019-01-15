@@ -48,8 +48,10 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<ListViewItem> arrayList;
 
     SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences_setup;
     String userId;
     boolean isSleeping;
+    boolean isBluetoothOn, isVibratorOn;
 
     BluetoothSPP bluetoothSPP;
     RequestQueue mainQueue;
@@ -57,11 +59,15 @@ public class MainActivity extends AppCompatActivity {
 
     StringRequest mainRequest;
     Vibrator vibrator;
+    public static Activity _Main_Activity;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        _Main_Activity = MainActivity.this;
 
         btn_setUp = (BootstrapButton) findViewById(R.id.btn_setUp);
         btn_renew = (BootstrapButton) findViewById(R.id.btn_renew);
@@ -69,9 +75,23 @@ public class MainActivity extends AppCompatActivity {
         btn_nsleep = (BootstrapButton) findViewById(R.id.btn_nsleep);
         btn_sleep = (BootstrapButton) findViewById(R.id.btn_sleep);
         lv_sleep = (ListView) findViewById(R.id.lv_sleep);
+
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         isSleeping = false;
+
+        sharedPreferences = getSharedPreferences("login_info", Context.MODE_PRIVATE);
+
+        userId = sharedPreferences.getString("autoLogin" , "");
+
+        sharedPreferences_setup = getSharedPreferences("setup_info", Context.MODE_PRIVATE);
+        SharedPreferences.Editor setupEditor = sharedPreferences_setup.edit();
+        isBluetoothOn = sharedPreferences_setup.getBoolean("bluetooth", true);
+        isVibratorOn = sharedPreferences_setup.getBoolean("vibrator", true);
+        setupEditor.putBoolean("bluetooth", isBluetoothOn);
+        setupEditor.putBoolean("vibrator", isVibratorOn);
+
+
 
         bluetoothSPP = new BluetoothSPP(MainActivity.this);
         if (!(bluetoothSPP.getServiceState() == BluetoothState.STATE_CONNECTED)) {
@@ -168,7 +188,10 @@ public class MainActivity extends AppCompatActivity {
                         blueQueue.add(blueRequest);
                         isSleeping = false;
                         bluetoothSPP.send("1", true);
-                        vibrator.vibrate(new long[]{2000, 2000, 2000, 2000, 2000, 2000}, -1);
+                        isVibratorOn = sharedPreferences_setup.getBoolean("vibrator", true);
+                        if (isVibratorOn){
+                            vibrator.vibrate(new long[]{2000, 2000, 2000, 2000, 2000, 2000}, -1);
+                        }
                     }
                 }
             }
@@ -187,9 +210,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        sharedPreferences = getSharedPreferences("login_info", Context.MODE_PRIVATE);
 
-        userId = sharedPreferences.getString("autoLogin", "");
+
+
         arrayList = new ArrayList<>();
         //testData();
 
@@ -241,17 +264,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-<<<<<<< HEAD
-        btn_date.setOnClickListener(new  BtnListener());
-        btn_dsleep.setOnClickListener(new  BtnListener());
-        btn_nsleep.setOnClickListener(new  BtnListener());
-        btn_sleep.setOnClickListener(new  BtnListener());
-=======
         bluetoothSPP.setBluetoothConnectionListener(new BluetoothSPP.BluetoothConnectionListener() { //연결됐을 때
             public void onDeviceConnected(String name, String address) {
                 Toast.makeText(getApplicationContext()
                         , "Connected to " + name + "\n" + address
                         , Toast.LENGTH_SHORT).show();
+                isBluetoothOn = true;
+
             }
 
             public void onDeviceDisconnected() { //연결해제
@@ -260,7 +279,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), DeviceList.class);
                 startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
             }
->>>>>>> master
 
             public void onDeviceConnectionFailed() { //연결실패
                 Toast.makeText(getApplicationContext()
@@ -475,185 +493,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-<<<<<<< HEAD
-    class BtnListener implements View.OnClickListener {
 
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.btn_date:
-
-                    Intent intent = new Intent(MainActivity.this,ListActivity.class);
-                    startActivity(intent);
-
-                    break;
-                case R.id.btn_dsleep:
-
-                    Intent intent1 = new Intent(MainActivity.this,ListActivity.class);
-                    startActivity(intent1);
-
-                    break;
-                case R.id.btn_nsleep:
-
-                    Intent intent2 = new Intent(MainActivity.this,ListActivity.class);
-                    startActivity(intent2);
-
-                    break;
-                case R.id.btn_sleep:
-
-                    Intent intent3 = new Intent(MainActivity.this,ListActivity.class);
-                    startActivity(intent3);
-
-                    break;
-
-            }
-        }
-    }
-=======
-    //    private void testData() {
-//        String response = "[\n" +
-//                "\t{\n" +
-//                "\t\t\"id\": 1,\n" +
-//                "\t\t\"regDate\": \"19/01/07\",\n" +
-//                "\t\t\"sleepTime\": \"19/01/07 16:33:47\",\n" +
-//                "\t\t\"wakeupTime\": \"19/01/07 17:55:14\",\n" +
-//                "\t\t\"totalTime\": \"0\",\n" +
-//                "\t\t\"dayNight\": \"DAY\",\n" +
-//                "\t\t\"memo\": \"cursus in,\",\n" +
-//                "\t\t\"updateDate\": \"19/01/07\"\n" +
-//                "\t},\n" +
-//                "\t{\n" +
-//                "\t\t\"id\": 2,\n" +
-//                "\t\t\"regDate\": \"19/01/07\",\n" +
-//                "\t\t\"sleepTime\": \"19/01/07 22:21:03\",\n" +
-//                "\t\t\"wakeupTime\": \"19/01/08 03:51:56\",\n" +
-//                "\t\t\"totalTime\": \"0\",\n" +
-//                "\t\t\"dayNight\": \"NIGHT\",\n" +
-//                "\t\t\"memo\": \"mattis velit\",\n" +
-//                "\t\t\"updateDate\": \"19/01/08\"\n" +
-//                "\t},\n" +
-//                "\t{\n" +
-//                "\t\t\"id\": 3,\n" +
-//                "\t\t\"regDate\": \"19/01/07\",\n" +
-//                "\t\t\"sleepTime\": \"19/01/07 21:24:36\",\n" +
-//                "\t\t\"wakeupTime\": \"19/01/08 04:18:22\",\n" +
-//                "\t\t\"totalTime\": \"0\",\n" +
-//                "\t\t\"dayNight\": \"NIGHT\",\n" +
-//                "\t\t\"memo\": \"Nulla eget metus eu erat\",\n" +
-//                "\t\t\"updateDate\": \"19/01/08\"\n" +
-//                "\t},\n" +
-//                "\t{\n" +
-//                "\t\t\"id\": 4,\n" +
-//                "\t\t\"regDate\": \"19/01/07\",\n" +
-//                "\t\t\"sleepTime\": \"19/01/07 06:35:29\",\n" +
-//                "\t\t\"wakeupTime\": \"19/01/07 09:31:56\",\n" +
-//                "\t\t\"totalTime\": \"0\",\n" +
-//                "\t\t\"dayNight\": \"DAY\",\n" +
-//                "\t\t\"memo\": \"sem, consequat nec, mollis\",\n" +
-//                "\t\t\"updateDate\": \"19/01/07\"\n" +
-//                "\t},\n" +
-//                "\t{\n" +
-//                "\t\t\"id\": 5,\n" +
-//                "\t\t\"regDate\": \"19/01/07\",\n" +
-//                "\t\t\"sleepTime\": \"19/01/07 11:36:08\",\n" +
-//                "\t\t\"wakeupTime\": \"19/01/07 14:40:16\",\n" +
-//                "\t\t\"totalTime\": \"0\",\n" +
-//                "\t\t\"dayNight\": \"DAY\",\n" +
-//                "\t\t\"memo\": \"Suspendisse sed\",\n" +
-//                "\t\t\"updateDate\": \"19/01/07\"\n" +
-//                "\t},\n" +
-//                "\t{\n" +
-//                "\t\t\"id\": 6,\n" +
-//                "\t\t\"regDate\": \"19/01/07\",\n" +
-//                "\t\t\"sleepTime\": \"19/01/07 16:29:03\",\n" +
-//                "\t\t\"wakeupTime\": \"19/01/07 18:21:48\",\n" +
-//                "\t\t\"totalTime\": \"0\",\n" +
-//                "\t\t\"dayNight\": \"DAY\",\n" +
-//                "\t\t\"memo\": \"enim. Mauris quis turpis\",\n" +
-//                "\t\t\"updateDate\": \"19/01/07\"\n" +
-//                "\t},\n" +
-//                "\t{\n" +
-//                "\t\t\"id\": 7,\n" +
-//                "\t\t\"regDate\": \"19/01/07\",\n" +
-//                "\t\t\"sleepTime\": \"19/01/07 22:30:24\",\n" +
-//                "\t\t\"wakeupTime\": \"19/01/08 05:26:30\",\n" +
-//                "\t\t\"totalTime\": \"0\",\n" +
-//                "\t\t\"dayNight\": \"NIGHT\",\n" +
-//                "\t\t\"memo\": \"scelerisque mollis. Phasellus libero\",\n" +
-//                "\t\t\"updateDate\": \"19/01/08\"\n" +
-//                "\t},\n" +
-//                "\t{\n" +
-//                "\t\t\"id\": 8,\n" +
-//                "\t\t\"regDate\": \"19/01/07\",\n" +
-//                "\t\t\"sleepTime\": \"19/01/07 14:04:36\",\n" +
-//                "\t\t\"wakeupTime\": \"19/01/07 15:18:36\",\n" +
-//                "\t\t\"totalTime\": \"0\",\n" +
-//                "\t\t\"dayNight\": \"DAY\",\n" +
-//                "\t\t\"memo\": \"eu dui. Cum\",\n" +
-//                "\t\t\"updateDate\": \"19/01/07\"\n" +
-//                "\t},\n" +
-//                "\t{\n" +
-//                "\t\t\"id\": 9,\n" +
-//                "\t\t\"regDate\": \"19/01/07\",\n" +
-//                "\t\t\"sleepTime\": \"19/01/07 06:25:52\",\n" +
-//                "\t\t\"wakeupTime\": \"19/01/07 12:32:00\",\n" +
-//                "\t\t\"totalTime\": \"0\",\n" +
-//                "\t\t\"dayNight\": \"DAY\",\n" +
-//                "\t\t\"memo\": \"sapien, cursus in, hendrerit consectetuer,\",\n" +
-//                "\t\t\"updateDate\": \"19/01/07\"\n" +
-//                "\t},\n" +
-//                "\t{\n" +
-//                "\t\t\"id\": 10,\n" +
-//                "\t\t\"regDate\": \"19/01/07\",\n" +
-//                "\t\t\"sleepTime\": \"19/01/07 20:08:01\",\n" +
-//                "\t\t\"wakeupTime\": \"19/01/08 05:27:53\",\n" +
-//                "\t\t\"totalTime\": \"0\",\n" +
-//                "\t\t\"dayNight\": \"NIGHT\",\n" +
-//                "\t\t\"memo\": \"at auctor ullamcorper, nisl\",\n" +
-//                "\t\t\"updateDate\": \"19/01/08\"\n" +
-//                "\t}\n" +
-//                "]";
-//        JSONObject root;
-//        JSONArray jsonArray;
-//        try {
-//            jsonArray = new JSONArray(response);
-//            for (int i = jsonArray.length()-1; i >=0 ; i--) {
-//                root = jsonArray.getJSONObject(i);
-//                int boardId = Integer.valueOf(root.getString("id"));
-//                String date = root.getString("regDate");
-//                String wakeupTime = root.getString("wakeupTime");
-//                String sleepTime = root.getString("sleepTime");
-//                String totalTime = root.getString("totalTime");
-//                String dayNight = root.getString("dayNight");
-//                String memo = root.getString("memo");
-//                arrayList.add(new ListViewItem(boardId, date, wakeupTime, sleepTime, totalTime, dayNight, memo));
-//
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-//    class BluetoothTask extends AsyncTask<Void, String, String> {
-//
-//        BluetoothSPP bluetoothSPP;
-//
-//        RequestQueue blueQueue;
-//
-//        @Override
-//        protected void onPreExecute() {
-//            bluetoothSPP = new BluetoothSPP(MainActivity.this);
-//            blueQueue = Volley.newRequestQueue(MainActivity.this);
-//
-//
-//        }
-//
-//        @Override
-//        protected String doInBackground(Void... voids) {
-//
-//        }
-//    }
->>>>>>> master
 
     private String testboolean(){
         if (isSleeping) {

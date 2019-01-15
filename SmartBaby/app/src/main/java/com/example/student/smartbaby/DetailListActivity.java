@@ -98,6 +98,44 @@ public class DetailListActivity extends AppCompatActivity {
             }
         });
 
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et_memo.setText("");
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+
+                StringRequest request = new StringRequest(Request.Method.POST, URL_MEMO_UPDATE,
+                        // 요청 성공시
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d("result", "[" + response + "]");
+                            }
+                        },
+
+                        //에러 발생시
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("error", "[" + error.getMessage() + "]");
+                            }
+                        }) {
+                    //요청보낼 때 추가로 파라미터가 필요할 경우
+                    //URL_JOIN?a=xxx 이런식으로 보내는 대신에 아래처럼 가능.
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("boardId", boardId);
+                        params.put("memo", "");
+                        return params;
+                    }
+
+                };
+
+                queue.add(request);
+            }
+        });
+
         btn_modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

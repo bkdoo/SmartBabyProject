@@ -1,3 +1,21 @@
+#define C  262
+#define D  294
+#define E  330
+#define F  349
+#define G  392
+#define A  440
+#define B  494
+#define CC  523
+#define DD  587
+#define EE  659
+#define FF  698
+#define GG  784
+#define AA  880
+#define BB  988
+#define CCC 1047
+#define DDD 1175
+
+
 //시리얼통신 라이브러리 호출
 
 #include <SoftwareSerial.h>
@@ -31,9 +49,7 @@ void loop() {
     Serial.print(toSend);
     //안드로이드에서 1을 전송받으면 piezo 작동
     if(toSend=='1') {
-        tone(piezo, 262, 2000);
-        delay(400);
-        noTone(piezo);
+        schoolbell();
     }
   }
   
@@ -57,4 +73,38 @@ void loop() {
   delay(100);
   
 
+}
+
+void setSound(int piezo, int note, int meter) {
+  tone(piezo, note, meter);
+  delay(meter);
+  noTone(piezo);
+}
+
+void schoolbell(){
+  setSound(piezo, G, 300);
+  setSound(piezo, G, 300);
+  setSound(piezo, A, 300);
+  setSound(piezo, A, 300);
+  setSound(piezo, G, 300);
+  setSound(piezo, G, 300);
+  setSound(piezo, E, 600);
+  setSound(piezo, G, 300);
+  setSound(piezo, G, 300);
+  setSound(piezo, E, 300);
+  setSound(piezo, E, 300);
+  setSound(piezo, D, 900);
+  setSound(piezo, G, 300);
+  setSound(piezo, G, 300);
+  setSound(piezo, A, 300);
+  setSound(piezo, A, 300);
+  setSound(piezo, G, 300);
+  setSound(piezo, G, 300);
+  setSound(piezo, E, 600);
+  setSound(piezo, G, 300);
+  setSound(piezo, E, 300);
+  setSound(piezo, D, 300);
+  setSound(piezo, E, 300);
+  setSound(piezo, C, 900);
+  
 }
